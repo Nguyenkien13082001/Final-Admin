@@ -1,0 +1,87 @@
+.user-management {
+  max-width: 70%;
+  margin: 20px auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: #dbf1f359;
+  overflow-x: auto; /* Cho phép cuộn ngang nếu bảng rộng */
+}
+
+.user-management table {
+  width: 100%;
+  min-width: 600px; /* Đảm bảo bảng không quá nhỏ */
+  border-collapse: collapse;
+}
+
+.user-management th,
+.user-management td {
+  border: 2px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.user-management th {
+  background-color: #cafaff59;
+}
+
+.Edit-Del button {
+  margin: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.add {
+  text-align: center;
+  margin: 10px;
+}
+
+.Edit-Del {
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .user-management {
+    max-width: 100%;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: none;
+  }
+
+  .user-management table {
+    font-size: 0.9em;
+  }
+
+  button {
+    padding: 5px;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-management th,
+  .user-management td {
+    padding: 6px; /* Giảm padding để tiết kiệm không gian */
+  }
+
+  button {
+    margin-right: 5px; /* Giảm khoảng cách bên phải của nút */
+    padding: 4px; /* Giảm padding của nút */
+    font-size: 0.7em; /* Điều chỉnh kích thước chữ cho phù hợp */
+  }
+}
