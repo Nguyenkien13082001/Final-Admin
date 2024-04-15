@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <div className={`header ${isOpen ? "open" : ""}`}>
       <div className="logo">
-        <img style={{ width: "70px", height: "70px" }} src={logo} alt="" />
+        <img style={{ width: "70px", height: "70px" }} src={logo} alt="Logo" />
       </div>
       <div className="menu-toggle" onClick={toggleMenu}>
         <div className="menu-icon"></div>

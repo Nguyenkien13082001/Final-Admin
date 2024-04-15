@@ -1,0 +1,32 @@
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  /* Thêm các thuộc tính khác nếu cần */
+}
+
+.BarChartcss {
+  width: 100%;
+  max-width: 800px; /* Hoặc bất kỳ giới hạn nào bạn muốn */
+  min-width: 300px;
+  margin: 0 10px; /* Khoảng cách giữa các biểu đồ */
+  padding: 20px;
+  background-color: #e1f2fa50;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1; /* Khiến các biểu đồ có khả năng mở rộng */
+}
+
+.charts-row {
+  display: flex;
+  justify-content: space-around; /* Hoặc 'space-between' để chia đều khoảng cách */
+  flex-wrap: wrap; /* Cho phép các biểu đồ chuyển xuống hàng tiếp theo trên màn hình nhỏ */
+  margin: 20px 0;
+  width: 80%;
+  margin-top: 90px;
+}

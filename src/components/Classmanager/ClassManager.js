@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import apiClient from "../../api/apiClient";
 import AddClass from "./AddClass";
 import EditClass from "./EditClass";
 import "./ClassManager.css";
+
 const initialUsers = [
   {
     id: 1,
@@ -19,11 +21,26 @@ const initialUsers = [
 ];
 
 export default function ClassManager() {
-  const [users, setUsers] = useState(initialUsers);
+  // const [users, setUsers] = useState(initialUsers);
+  const [classes, setclasses] = useState(initialUsers);
+
+  // useEffect(() => {
+  //   const fetchClasses = async () => {
+  //     try {
+  //       const response = await apiClient.get("/class");
+  //       console.log(response.data);
+  //       setclasses(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchClasses();
+  // }, []);
 
   const handleDelete = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
+    const updatedUsers = classes.filter((user) => user.id !== id);
+    setclasses(updatedUsers);
   };
 
   const handleEdit = (id) => {
@@ -41,11 +58,11 @@ export default function ClassManager() {
         <thead>
           <tr>
             <th>Class</th>
-            <th style={{ width: "50%" }}>Hành động</th>
+            <th style={{ width: "50%" }}>Action</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {classes.map((user) => (
             <tr key={user.id}>
               <td>{user.class}</td>
 
