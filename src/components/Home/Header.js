@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("user_id");
     localStorage.removeItem("email");

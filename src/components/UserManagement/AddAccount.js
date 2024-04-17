@@ -4,12 +4,37 @@ import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { toast } from "react-toastify";
 
-export default function AddAccount() {
+export default function AddAccount({ onAdd }) {
   const [show, setShow] = useState(false);
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [dob, setDob] = useState("");
+  const [role, setRole] = useState("USER");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleSave = () => {
+    if (!name || !email || !dob) {
+      toast.error("Please fill out all required fields.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Invalid email format");
+      return;
+    }
+    // Gọi prop onAddClass để thêm lớp mới
+    onAdd(name, email, dob, role);
+    // Đóng modal và reset form
+    setName("");
+    setDob("");
+    setEmail("");
+    setRole("USER");
+    setShow(false);
+  };
   return (
     <>
       <Button
@@ -28,40 +53,52 @@ export default function AddAccount() {
           <Form>
             <Form.Group className="mb-3" controlId="formGridName">
               <Form.Label>Name</Form.Label>
-              <Form.Control placeholder="Name" />
+              <Form.Control
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </Form.Group>
 
             <Form.Group as={Col} controlId="formGridEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
+            <Form.Group className="mb-3" controlId="formGridDoB">
+              <Form.Label>DoB</Form.Label>
+              <Form.Control
+                placeholder="DoB"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                type="date"
+                required
+              />
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridConfirmPassword">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Confirm Password" />
+            <Form.Group as={Col} controlId="formGridClass">
+              <Form.Label>Role</Form.Label>
+              <Form.Select required onChange={(e) => setRole(e.target.value)}>
+                <option>USER</option>
+                <option>ADMIN</option>
+                <option>VIP</option>
+              </Form.Select>
             </Form.Group>
 
-            {/* <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridClass">
-                <Form.Label>Class</Form.Label>
-                <Form.Select defaultValue="Choose...">
-                  <option>Choose...</option>
-                  <option>...</option>
-                </Form.Select>
-              </Form.Group> */}
-
-            <Form.Group as={Col} controlId="formGridRole">
+            {/* <Form.Group as={Col} controlId="formGridRole">
               <Form.Label>Role</Form.Label>
               <Form.Select defaultValue="Choose...">
                 <option>Choose...</option>
                 <option>...</option>
               </Form.Select>
-            </Form.Group>
+            </Form.Group> */}
             {/* </Row> */}
           </Form>
         </Modal.Body>
@@ -69,7 +106,7 @@ export default function AddAccount() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSave}>
             Save Changes
           </Button>
         </Modal.Footer>

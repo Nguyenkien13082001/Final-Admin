@@ -1,0 +1,84 @@
+/* Container to center the form on the page */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Use the full height of the viewport */
+  background-color: #7fffff1c;
+}
+
+/* Form container styling */
+.form-container {
+  background: rgba(165, 231, 209, 0.253);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 440px; /* Fixed width */
+}
+
+/* Form heading styles */
+h2,
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+h2 {
+  margin-bottom: 10px; /* Space between the welcome message and the form title */
+  font-size: 1.2rem; /* Smaller font size for subheading */
+}
+
+h1 {
+  margin-bottom: 20px; /* Space above the input fields */
+  font-size: 1.5rem; /* Larger font size for main heading */
+}
+
+/* Styling for input fields */
+input[type="email"],
+input[type="password"] {
+  width: 100%; /* Full width of the form container */
+  padding: 10px; /* Padding inside the input fields */
+  margin-bottom: 20px; /* Space between input fields */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 5px; /* Rounded borders */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Styling for the login button */
+.btnlogin {
+  display: flex;
+  justify-content: center; /* Center the button inside this div */
+}
+
+button {
+  background-color: #007bff; /* Blue background color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker shade of blue on hover */
+  transform: scale(1.05); /* Slightly increase the size */
+}
+
+button:focus {
+  outline: none; /* Remove the outline on focus */
+}
+
+/* Additional media query for responsiveness */
+@media (max-width: 400px) {
+  .form-container {
+    width: 90%; /* Smaller width on smaller screens */
+    padding: 20px; /* Less padding on smaller screens */
+  }
+}

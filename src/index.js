@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./Pages/Home";
 import UserManagementPage from "./Pages/UserManagementPage";
 import "bootstrap/dist/css/bootstrap.min.css";

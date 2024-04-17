@@ -1,63 +1,80 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+// import logo from "../../img/logoE.png";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../../api/apiClient";
+import { toast } from "react-toastify";
+import "./Login.css";
 
-export default function FormLogin() {
-  // Khởi tạo state cho email và password
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  // Fake account details
-  const fakeAccount = {
-    email: "kien123@gmail.com",
-    password: "123",
-  };
+function FormLogin() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const navigate = useNavigate();
-  // Hàm xử lý khi người dùng submit form
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (email === fakeAccount.email && password === fakeAccount.password) {
-      navigate("admin/home");
-      //   alert("Đăng nhập thành công!");
-      // Sau này bạn có thể thay thế bằng logic chuyển hướng hoặc gọi API ở đây
-    } else {
-      alert("Email hoặc mật khẩu không đúng.");
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
     }
-    // Reset form
-    setEmail("");
-    setPassword("");
+  }, [navigate]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await apiClient.post("/api/login", formData);
+      console.log("login", response);
+      if (response.token !== "") {
+        localStorage.setItem("token", response.token);
+        // localStorage.setItem("role", response.role);
+        navigate("/admin/home");
+        toast.success("Login successfully!");
+      } else {
+        toast.error("Email or Password incorrect!");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
-    <div>
-      <h1>Đăng nhập</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Mật khẩu:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <button type="submit">Đăng nhập</button>
-        </div>
-      </form>
+    <div className="container">
+      <div className="form-container login-container">
+        <form onSubmit={handleLoginSubmit}>
+          {/* <img style={{ width: "80px", height: "80px" }} src={logo} alt="" /> */}
+          <h2 style={{ color: "Highlight" }}>Admin Login</h2>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <div className="btnlogin">
+            <button type="submit">Sign In</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
+
+export default FormLogin;

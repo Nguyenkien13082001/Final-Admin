@@ -5,11 +5,20 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-export default function AddClass() {
+export default function AddClass({ onAdd }) {
   const [show, setShow] = useState(false);
-
+  const [className, setClassName] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleSave = () => {
+    // Gọi prop onAddClass để thêm lớp mới
+    onAdd(className);
+    // Đóng modal và reset form
+    setClassName("");
+    setShow(false);
+  };
+
   return (
     <>
       <Button
@@ -19,7 +28,6 @@ export default function AddClass() {
       >
         Add Class
       </Button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Class</Modal.Title>
@@ -28,48 +36,22 @@ export default function AddClass() {
           <Form>
             <Form.Group className="mb-3" controlId="formGridName">
               <Form.Label>Class</Form.Label>
-              <Form.Control placeholder="Name" />
+              <Form.Control
+                type="number"
+                min={1}
+                max={12}
+                placeholder="Enter class name"
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
+              />
             </Form.Group>
-
-            {/* <Form.Group as={Col} controlId="formGridEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridConfirmPassword">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Confirm Password" />
-            </Form.Group> */}
-
-            {/* <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridClass">
-                <Form.Label>Class</Form.Label>
-                <Form.Select defaultValue="Choose...">
-                  <option>Choose...</option>
-                  <option>...</option>
-                </Form.Select>
-              </Form.Group> */}
-            {/* 
-            <Form.Group as={Col} controlId="formGridRole">
-              <Form.Label>Role</Form.Label>
-              <Form.Select defaultValue="Choose...">
-                <option>Choose...</option>
-                <option>...</option>
-              </Form.Select>
-            </Form.Group> */}
-            {/* </Row> */}
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSave}>
             Save Changes
           </Button>
         </Modal.Footer>
