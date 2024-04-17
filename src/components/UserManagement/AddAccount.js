@@ -46,70 +46,73 @@ export default function AddAccount({ onAdd }) {
       </Button>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Account</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formGridName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </Form.Group>
+        <div style={{ backgroundColor: "#00eaff1a" }}>
+          {" "}
+          <Modal.Header closeButton>
+            <Modal.Title>Add Account</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="formGridName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
+              <Form.Group as={Col} controlId="formGridEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formGridDoB">
-              <Form.Label>DoB</Form.Label>
-              <Form.Control
-                placeholder="DoB"
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-                type="date"
-                required
-              />
-            </Form.Group>
+              <Form.Group className="mb-3" controlId="formGridDoB">
+                <Form.Label>DoB</Form.Label>
+                <Form.Control
+                  placeholder="DoB"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
+                  type="date"
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridClass">
-              <Form.Label>Role</Form.Label>
-              <Form.Select required onChange={(e) => setRole(e.target.value)}>
-                <option>USER</option>
-                <option>ADMIN</option>
-                <option>VIP</option>
-              </Form.Select>
-            </Form.Group>
+              <Form.Group as={Col} controlId="formGridClass">
+                <Form.Label>Role</Form.Label>
+                <Form.Select required onChange={(e) => setRole(e.target.value)}>
+                  <option>USER</option>
+                  <option>ADMIN</option>
+                  <option>VIP</option>
+                </Form.Select>
+              </Form.Group>
 
-            {/* <Form.Group as={Col} controlId="formGridRole">
+              {/* <Form.Group as={Col} controlId="formGridRole">
               <Form.Label>Role</Form.Label>
               <Form.Select defaultValue="Choose...">
                 <option>Choose...</option>
                 <option>...</option>
               </Form.Select>
             </Form.Group> */}
-            {/* </Row> */}
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+              {/* </Row> */}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </div>
       </Modal>
     </>
   );

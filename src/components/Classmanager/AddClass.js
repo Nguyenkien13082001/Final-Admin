@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { toast } from "react-toastify";
 
 export default function AddClass({ onAdd }) {
   const [show, setShow] = useState(false);
@@ -12,6 +13,11 @@ export default function AddClass({ onAdd }) {
   const handleShow = () => setShow(true);
 
   const handleSave = () => {
+    if (!className) {
+      toast.warning("Please fill in all fields.");
+      setShow(true);
+      return;
+    }
     // Gọi prop onAddClass để thêm lớp mới
     onAdd(className);
     // Đóng modal và reset form

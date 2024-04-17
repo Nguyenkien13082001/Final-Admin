@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./DashBoard.css";
+import apiClient from "../../api/apiClient";
 import {
   BarChart,
   Bar,
@@ -32,14 +33,33 @@ const testAttemptsData = [
 ];
 
 function Dashboard() {
+  const [userData, setUserData] = useState([]);
+  // const formatYAxisTick = (tickItem) => {
+  //   return tickItem % 1 === 0 ? tickItem : "";
+  // };
+  const fetchUserData = async () => {
+    try {
+      const response = await apiClient.get("api/count_member_admin");
+      setUserData(response.count);
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   return (
     <div className="chart-container">
       <div className="BarChartcss">
-        <h2 style={{ textAlign: "center" }}>Biểu đồ Số lượng Người dùng</h2>{" "}
+        <h2 style={{ textAlign: "center" }}>
+          Graph of normal users and vip users
+        </h2>{" "}
         <BarChart
           width={800}
           height={300}
-          data={data}
+          data={userData}
           margin={{
             top: 5,
             right: 30,
@@ -48,12 +68,16 @@ function Dashboard() {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey="Date" />
+          <YAxis
+            allowDecimals={false}
+            tickFormatter={(value) => Math.floor(value)}
+            domain={[0, "dataMax + 1"]}
+          />
           <Tooltip />
           <Legend />
-          <Bar dataKey="User" fill="#8884d8" />
-          <Bar dataKey="Premium" fill="#82ca9d" />
+          <Bar dataKey="USER" fill="#8884d8" />
+          <Bar dataKey="VIP" fill="#82ca9d" />
         </BarChart>
       </div>
 

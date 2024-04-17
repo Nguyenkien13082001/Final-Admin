@@ -18,6 +18,7 @@
   border: 2px solid #ddd;
   padding: 8px;
   text-align: left;
+  width: 50%;
 }
 
 .chapter-management th {

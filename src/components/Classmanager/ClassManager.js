@@ -31,6 +31,10 @@ export default function ClassManager() {
   };
 
   const handleAddClass = async (name) => {
+    // if (!name) {
+    //   toast.error("Please fill in all fields.");
+    //   return;
+    // }
     try {
       const response = await apiClient.post("/api/add_class_admin", {
         class_name: name,
