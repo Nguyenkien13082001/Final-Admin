@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import apiClient from "../../api/apiClient";
 import { toast } from "react-toastify";
 import "./QuestionManager.css";
@@ -9,6 +9,8 @@ import {
   getChaptersCount,
   getTopicsCount,
 } from "../../api/services";
+import DetailQuestion from "./DetailQuestion";
+import AddQuestion from "./AddQuestion";
 
 function QuestionManager() {
   // Function để xử lý sự kiện (chưa triển khai)
@@ -22,26 +24,24 @@ function QuestionManager() {
   const [topics, setTopics] = useState([]);
   const [questionsData, setQuestionsData] = useState([]);
   const [showQuestion, setShowQuestion] = useState([]);
-
+  const [showQuestionDetail, setShowQuestionDetail] = useState(false);
+  const [isReload, setIsReload] = useState(false);
   const config = {
-    loader: { load: ["input/asciimath"] },
+    loader: { load: ["input/asciimath"] }, //mathjax config
+  };
+  const fetchClasses = async () => {
+    const classes = await getClassesCount();
+    setClasses(classes);
   };
 
+  const fetchQuestion = async () => {
+    const questions = await getQuestions();
+    setQuestionsData(questions);
+    setShowQuestion(questions);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const classes = await getClassesCount();
-      setClasses(classes);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const questions = await getQuestions();
-      setQuestionsData(questions);
-      setShowQuestion(questions);
-    };
-    fetchData();
+    fetchClasses();
+    fetchQuestion();
   }, []);
 
   const handleClassChange = async (e) => {
@@ -53,8 +53,6 @@ function QuestionManager() {
     } else {
       setSelectedClass(e.target.value);
       const chapters = await getChaptersCount(e.target.value);
-      // console.log("valueeeeeeee", e.target.value);
-      // console.log("xnxx>>>", questionsData[0].class_id);
       setChapters(chapters);
       const filteredQuestions = questionsData.filter(
         (question) => String(question.class_id) === e.target.value
@@ -96,6 +94,36 @@ function QuestionManager() {
         (question) => String(question.topic_id) === e.target.value
       );
       setShowQuestion(filteredQuestions);
+    }
+  };
+
+  const handleAddQuestion = async (question) => {
+    console.log("Adding question:", question);
+    const options = {
+      value1: question.option1,
+      value2: question.option2,
+      value3: question.option3,
+      value4: question.option4,
+    };
+    try {
+      const response = await apiClient.post("/api/add_question_admin", {
+        class_id: question.class_id,
+        chapter_id: question.chapter_id,
+        topic_id: question.topic_id,
+        content: question.content,
+        options: options,
+        correct: question.correctOption,
+        explaination: question.explain,
+      });
+
+      const updatedQuestions = [...questions, response.question];
+      console.log("question123", response);
+      setQuestions(updatedQuestions);
+      fetchQuestion();
+      toast.success("Add question successfully!");
+    } catch (error) {
+      console.error("Failed to add question:", error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -153,56 +181,97 @@ function QuestionManager() {
             ))}
           </select>
         </div>
+        <div>
+          <AddQuestion onAdd={handleAddQuestion} />
+        </div>
         <div className="question-management-table">
-          <table>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Content</th>
-                {/* <th>Lớp</th>
-              <th>Chương</th>
-              <th>Chuyên đề</th> */}
-                <th style={{ width: "20%" }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {showQuestion.map((question, index) => (
-                <tr key={question.id}>
-                  <td>{index + 1}</td>
-
-                  <td>
-                    <MathJax dynamic>
-                      <div>{question.content}</div>
-                    </MathJax>
-                  </td>
-                  {/* <td>{question.class}</td>
-                <td>{question.chapter}</td>
-                <td>{question.topic}</td> */}
-                  <td>
-                    <button
-                      onClick={() => handleEdit(question.id)}
-                      className="edit-btn"
-                    >
-                      View
-                    </button>
-
-                    <button
-                      onClick={() => handleEdit(question.id)}
-                      className="edit-btn"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(question.id)}
-                      className="delete-btn"
-                    >
-                      Delete
-                    </button>
-                  </td>
+          <MathJax dynamic>
+            <table>
+              <thead>
+                <tr className="csstr">
+                  <th>No</th>
+                  <th>Content</th>
+                  <th>Opt1</th>
+                  <th>Opt2</th>
+                  <th>Opt3</th>
+                  <th>Opt4</th>
+                  {/* <th>Correct Answer</th> */}
+                  <th>Explaination</th>
+                  <th style={{ width: "20%" }}>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {showQuestion.map((question, index) => (
+                  <tr key={question.id}>
+                    <td>{index + 1}</td>
+
+                    <td>
+                      <div>{question.content}</div>
+                    </td>
+
+                    {question.answers.map((q) => (
+                      <Fragment key={index}>
+                        {/* sử dụng React.Fragment để nhóm các thẻ <td> */}
+
+                        <td
+                          style={{
+                            color: q.answer.value1 === q.correct ? "red" : null,
+                          }}
+                        >
+                          {q.answer.value1}
+                        </td>
+                        <td
+                          style={{
+                            color: q.answer.value2 === q.correct ? "red" : null,
+                          }}
+                        >
+                          {q.answer.value2}
+                        </td>
+                        <td
+                          style={{
+                            color: q.answer.value3 === q.correct ? "red" : null,
+                          }}
+                        >
+                          {q.answer.value3}
+                        </td>
+                        <td
+                          style={{
+                            color: q.answer.value4 === q.correct ? "red" : null,
+                          }}
+                        >
+                          {q.answer.value4}
+                        </td>
+                        {/* <td>{q.correct}</td> */}
+                        <td>{q.explaination}</td>
+                      </Fragment>
+                    ))}
+
+                    <td>
+                      {/* <button
+                    // onClick={() => handleEdit(question.id)}
+                    // className="edit-btn"
+                    >
+                      <DetailQuestion />
+                    </button> */}
+
+                      <button
+                        onClick={() => handleEdit(question.id)}
+                        className="edit-btn"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(question.id)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </MathJax>
         </div>
       </div>
     </MathJaxContext>

@@ -76,6 +76,12 @@
   background-color: #c82333;
 }
 
+.csstr th {
+  text-align: center;
+}
+.cssradio {
+  margin-top: 0.5em;
+}
 /* Responsive design */
 @media (max-width: 768px) {
   .input-field,
