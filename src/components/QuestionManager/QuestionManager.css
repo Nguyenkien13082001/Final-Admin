@@ -20,7 +20,7 @@
   border-radius: 4px;
 }
 
-.search-btn {
+/* .search-btn {
   padding: 8px 16px;
   background-color: #007bff;
   color: white;
@@ -31,7 +31,7 @@
 
 .search-btn:hover {
   background-color: #0056b3;
-}
+} */
 
 .question-management-table table {
   width: 100%;
@@ -47,33 +47,6 @@
 
 .question-management-table th {
   background-color: #f4f4f4;
-}
-
-.edit-btn,
-.delete-btn {
-  padding: 5px 10px;
-  margin-right: 5px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-btn {
-  background-color: #ffc107;
-  color: black;
-}
-
-.delete-btn {
-  background-color: #dc3545;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #e0a800;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
 }
 
 .csstr th {

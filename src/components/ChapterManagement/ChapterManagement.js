@@ -11,7 +11,8 @@ export default function ChapterManagement() {
   const [data, setData] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState("");
   const [chapters, setChapters] = useState([]);
-
+  const [search, setSearch] = useState("");
+  const [search_chapter, setSearchChapter] = useState("");
   const fetchClassesAndSet = async () => {
     try {
       const classesData = await getClasses();
@@ -34,10 +35,12 @@ export default function ChapterManagement() {
           `/api/get_chapter_admin?class_id=${new_class}`
         );
         setChapters(response.chapters);
+        setSearchChapter(response.chapters);
         console.log("chapters", response.chapters);
       } catch (error) {
         console.error("Could not fetch chapters for class:", new_class, error);
         setChapters([]);
+        setSearchChapter([]);
       }
     }
   };
@@ -61,7 +64,8 @@ export default function ChapterManagement() {
       // const updatedChapters = [...chapters, response.chapter];
       // setChapters(updatedChapters);
       // toast.success(response.message);
-      fetchChapters(selectedClassId); // Tải lại chương cho lớp hiện tại
+      fetchChapters(); // Tải lại chương cho lớp hiện tại
+
       toast.success("Chapter added successfully.");
     } catch (error) {
       console.error("Failed to add chapter:", error);
@@ -77,6 +81,7 @@ export default function ChapterManagement() {
         );
         const updatedChapters = chapters.filter((chapter) => chapter.id !== id);
         setChapters(updatedChapters);
+        setSearchChapter(updatedChapters);
         toast.success(response.message);
       }
     } catch (error) {
@@ -98,12 +103,24 @@ export default function ChapterManagement() {
         return chapter;
       });
       setChapters(updatedChapters);
+      setSearchChapter(updatedChapters);
       console.log("chapters", response.chapters);
       toast.success(response.message);
     } catch (error) {
       // console.error("Could not fetch chapters for class:", id, error);
       toast.error("Failed to update chapter");
     }
+  };
+
+  const handleChangeSearch = (e) => {
+    setSearch(e.target.value);
+    console.log("search", e.target.value);
+
+    const filteredChapters = [...chapters].filter((chapter) =>
+      chapter.name.toLowerCase().includes(e.target.value)
+    );
+
+    setSearchChapter(filteredChapters);
   };
 
   return (
@@ -131,6 +148,18 @@ export default function ChapterManagement() {
         </Form.Group>
       </Form>
 
+      <Form className="d-flex">
+        <Form.Control
+          style={{ marginBottom: "10px" }}
+          type="search"
+          placeholder="Search"
+          className="me-2"
+          aria-label="Search"
+          value={search}
+          onChange={handleChangeSearch}
+        />
+      </Form>
+
       {chapters.length > 0 ? (
         <div>
           <table>
@@ -141,7 +170,7 @@ export default function ChapterManagement() {
               </tr>
             </thead>
             <tbody>
-              {chapters.map((chapter) => (
+              {search_chapter.map((chapter) => (
                 <tr key={chapter.id}>
                   <td>{chapter.name}</td>
                   <td className="Edit-Del">

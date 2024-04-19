@@ -11,13 +11,15 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { GrChapterAdd } from "react-icons/gr";
 import { MdOutlineTopic } from "react-icons/md";
 import { TbMessage2Question } from "react-icons/tb";
-
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const [search, setSearch] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("token");

@@ -12,7 +12,6 @@ import Row from "react-bootstrap/Row";
 import { toast } from "react-toastify";
 
 function AddQuestion({ onAdd }) {
-  const [show, setShow] = useState(false);
   const [classes, setClasses] = useState([]);
   const [chapters, setChapters] = useState([]);
   const [topics, setTopics] = useState([]);
@@ -28,6 +27,25 @@ function AddQuestion({ onAdd }) {
   const [correctOption, setCorrectOption] = useState("");
   const [explain, setExplain] = useState("");
   // const [isEnable, setIsEnable] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setSelectedClass("");
+    setSelectedChapter("");
+    setSelectedTopic("");
+    setContent("");
+    setOption1("");
+    setOption2("");
+    setOption3("");
+    setOption4("");
+    setCorrectOption("");
+    setExplain("");
+
+    setShow(false);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,8 +102,7 @@ function AddQuestion({ onAdd }) {
       !option2 ||
       !option3 ||
       !option4 ||
-      !correctOption ||
-      !explain
+      !correctOption
     ) {
       toast.warning("Please fill in all fields.");
       return;
@@ -111,13 +128,23 @@ function AddQuestion({ onAdd }) {
       correctOption,
       // Bạn có thể thêm các trường dữ liệu khác được thu thập từ form nếu cần
     });
+    setSelectedClass("");
+    setSelectedChapter("");
+    setSelectedTopic("");
+    setContent("");
+    setOption1("");
+    setOption2("");
+    setOption3("");
+    setOption4("");
+    setCorrectOption("");
+    setExplain("");
 
     setShow(false);
   };
 
   return (
     <div>
-      <Button variant="primary" onClick={() => setShow(true)}>
+      <Button variant="primary" onClick={handleShow}>
         Add Question
       </Button>
 
@@ -272,11 +299,11 @@ function AddQuestion({ onAdd }) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
-            Đóng
+          <Button variant="secondary" onClick={handleClose}>
+            Close
           </Button>
           <Button variant="primary" onClick={handleSave}>
-            Lưu Thay Đổi
+            Save
           </Button>
         </Modal.Footer>
       </Modal>

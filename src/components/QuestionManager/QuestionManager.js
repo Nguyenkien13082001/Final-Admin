@@ -9,8 +9,10 @@ import {
   getChaptersCount,
   getTopicsCount,
 } from "../../api/services";
-import DetailQuestion from "./DetailQuestion";
+
 import AddQuestion from "./AddQuestion";
+import EditQuestion from "./EditQuestion";
+import { Form } from "react-bootstrap";
 
 function QuestionManager() {
   // Function để xử lý sự kiện (chưa triển khai)
@@ -25,7 +27,8 @@ function QuestionManager() {
   const [questionsData, setQuestionsData] = useState([]);
   const [showQuestion, setShowQuestion] = useState([]);
   const [showQuestionDetail, setShowQuestionDetail] = useState(false);
-  const [isReload, setIsReload] = useState(false);
+  const [search, setSearch] = useState("");
+
   const config = {
     loader: { load: ["input/asciimath"] }, //mathjax config
   };
@@ -116,9 +119,6 @@ function QuestionManager() {
         explaination: question.explain,
       });
 
-      const updatedQuestions = [...questions, response.question];
-      console.log("question123", response);
-      setQuestions(updatedQuestions);
       fetchQuestion();
       toast.success("Add question successfully!");
     } catch (error) {
@@ -127,14 +127,52 @@ function QuestionManager() {
     }
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = async (question, id) => {
     console.log("Editing question with id:", id);
-    // Logic để chỉnh sửa câu hỏi
+    try {
+      const response = await apiClient.put(`/api/update_question_admin`, {
+        question_id: id,
+        content: question.content,
+
+        options: question.options,
+        correct: question.correct,
+        explaination: question.explaination,
+      });
+      fetchQuestion();
+      toast.success("Update question successfully!");
+    } catch (error) {
+      console.error("Failed to update question:", error);
+      toast.error(error.response.data.message);
+    }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     console.log("Deleting question with id:", id);
-    // Logic để xóa câu hỏi
+
+    try {
+      if (window.confirm("Do you want to delete this question?")) {
+        const response = await apiClient.delete(
+          `/api/delete_question_admin?question_id=${id}`
+        );
+        const updatedQuestions = showQuestion.filter(
+          (question) => question.id !== id
+        );
+        setShowQuestion(updatedQuestions);
+        toast.success("Delete question successfully!");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleChangeSearch = (e) => {
+    setSearch(e.target.value);
+    const filteredQuestions = questionsData.filter((question) => {
+      return question.content
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+    setShowQuestion(filteredQuestions);
   };
 
   return (
@@ -181,9 +219,20 @@ function QuestionManager() {
             ))}
           </select>
         </div>
-        <div>
+        <div style={{ marginBottom: "10px" }}>
           <AddQuestion onAdd={handleAddQuestion} />
         </div>
+        <Form className="d-flex">
+          <Form.Control
+            style={{ marginBottom: "10px" }}
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={search}
+            onChange={handleChangeSearch}
+          />
+        </Form>
         <div className="question-management-table">
           <MathJax dynamic>
             <table>
@@ -197,7 +246,7 @@ function QuestionManager() {
                   <th>Opt4</th>
                   {/* <th>Correct Answer</th> */}
                   <th>Explaination</th>
-                  <th style={{ width: "20%" }}>Action</th>
+                  <th style={{ width: "10%" }}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -246,26 +295,21 @@ function QuestionManager() {
                       </Fragment>
                     ))}
 
-                    <td>
-                      {/* <button
-                    // onClick={() => handleEdit(question.id)}
-                    // className="edit-btn"
-                    >
-                      <DetailQuestion />
-                    </button> */}
-
-                      <button
-                        onClick={() => handleEdit(question.id)}
-                        className="edit-btn"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(question.id)}
-                        className="delete-btn"
-                      >
-                        Delete
-                      </button>
+                    <td className="Edit-Del">
+                      <div className="action-buttons">
+                        <div className="edit-btn">
+                          <EditQuestion
+                            question={question}
+                            onSave={handleEdit}
+                          />
+                        </div>
+                        <button
+                          onClick={() => handleDelete(question.id)}
+                          className="delete-btn"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

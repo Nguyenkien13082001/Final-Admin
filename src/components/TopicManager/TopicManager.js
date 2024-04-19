@@ -15,6 +15,8 @@ export default function TopicManager() {
   const [chapters, setChapters] = useState([]);
   const [topicName, setTopicName] = useState("");
   const [isEnable, setIsEnable] = useState(true);
+  const [search, setSearch] = useState("");
+  const [search_topic, setSearchTopic] = useState("");
 
   const fetchClassesAndSet = async () => {
     try {
@@ -60,6 +62,7 @@ export default function TopicManager() {
       );
 
       setTopic(response.topics);
+      setSearchTopic(response.topics);
     } catch (error) {
       setTopic([]);
     }
@@ -100,6 +103,7 @@ export default function TopicManager() {
         // Cập nhật state để phản ánh thay đổi
         const updatedTopics = topic.filter((tp) => tp.id !== id); // tạo một mảng mới, bao gồm tất cả các topic ngoại trừ topic có id bằng với id được cung cấp
         setTopic(updatedTopics);
+        setSearchTopic(updatedTopics);
         toast.success(response.message);
       }
     } catch (error) {
@@ -121,6 +125,7 @@ export default function TopicManager() {
         return tp;
       });
       setTopic(updatedTopics);
+      setSearchTopic(updatedTopics);
       toast.success(response.message);
     } catch (error) {
       console.error("Failed to update topic:", error);
@@ -143,6 +148,15 @@ export default function TopicManager() {
   const handleInputChange = (e) => {
     console.log(selectedChapterId);
     setTopicName(e.target.value);
+  };
+
+  const handleChangeSearch = (e) => {
+    setSearch(e.target.value);
+    const searchValue = e.target.value.toLowerCase();
+    const filteredTopics = topic.filter((tp) =>
+      tp.name.toLowerCase().includes(searchValue)
+    );
+    setSearchTopic(filteredTopics);
   };
 
   return (
@@ -208,6 +222,17 @@ export default function TopicManager() {
             ))}
           </Form.Control>
         </Form.Group>
+        <Form className="d-flex">
+          <Form.Control
+            style={{ marginBottom: "10px" }}
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            value={search}
+            onChange={handleChangeSearch}
+          />
+        </Form>
       </Form>
       {topic.length > 0 ? (
         <table>
@@ -219,8 +244,8 @@ export default function TopicManager() {
           </thead>
 
           <tbody>
-            {topic &&
-              topic.map((topic) => (
+            {search_topic &&
+              search_topic.map((topic) => (
                 <tr key={topic.id}>
                   <td>{topic.name}</td>
 

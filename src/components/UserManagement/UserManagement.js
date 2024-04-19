@@ -4,16 +4,20 @@ import "./UserManagement.css";
 import AddAccount from "./AddAccount";
 import EditAccount from "./EditAccount";
 import { toast } from "react-toastify";
+import { Form } from "react-bootstrap";
 // Thêm các người dùng khác theo mẫu trên
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
 
+  const [search, setSearch] = useState("");
+  const [searchUser, setSearchUser] = useState([]);
   const fetchUsers = async () => {
     try {
       const response = await apiClient.get("/api/get_all_users_admin");
       // console.log("class", response);
       setUsers(response.users);
+      setSearchUser(response.users);
     } catch (error) {
       console.error(error);
     }
@@ -36,8 +40,9 @@ export default function UserManagement() {
         dob: dob,
         status: role,
       });
-      // Cập nhật state để phản ánh thay đổi, hiển thị data được thêm mới
+
       fetchUsers();
+
       toast.success(response.message);
       // console.log(response.message);
     } catch (error) {
@@ -53,7 +58,7 @@ export default function UserManagement() {
       );
       // Cập nhật state để phản ánh thay đổi
       const updatedUsers = users.filter((user) => user.ID !== id); // tạo một mảng mới, bao gồm tất cả các người dùng ngoại trừ người dùng có id bằng với id được cung cấp
-      setUsers(updatedUsers);
+      setSearchUser(updatedUsers);
       toast.success(response.message);
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -70,13 +75,26 @@ export default function UserManagement() {
       const updatedUser = users.map((user) =>
         user.ID === id ? { ...user, Status: role } : user
       );
-      setUsers(updatedUser);
+      setSearchUser(updatedUser);
       toast.success(response.message);
     } catch (error) {
       console.error("Failed to update class:", error);
       toast.error(error.response.data.message);
     }
   };
+
+  const handleChangeSearch = (e) => {
+    setSearch(e.target.value);
+    const filteredUsers = users.filter(
+      (user) =>
+        user.Name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        user.Email.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        user.DoB.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        user.Status.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setSearchUser(filteredUsers);
+  };
+
   return (
     <div className="user-management">
       <h2 style={{ textAlign: "center" }}>Account Management</h2>
@@ -84,6 +102,17 @@ export default function UserManagement() {
       <div className="add">
         <AddAccount onAdd={handleAddUser}></AddAccount>
       </div>
+      <Form className="d-flex">
+        <Form.Control
+          style={{ marginBottom: "10px" }}
+          type="search"
+          placeholder="Search"
+          className="me-2"
+          aria-label="Search"
+          value={search}
+          onChange={handleChangeSearch}
+        />
+      </Form>
       <table>
         <thead>
           <tr>
@@ -96,7 +125,7 @@ export default function UserManagement() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {searchUser.map((user) => (
             <tr key={user.ID}>
               {/* <td>
                 <img
