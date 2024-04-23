@@ -10,12 +10,22 @@
   justify-content: center;
   align-items: center;
   height: 100vh; /* Use the full height of the viewport */
-  background-color: #7fffff1c;
+  background: linear-gradient(
+    #e2f2f7,
+    #e8dfed
+  ); /* Subtle gradient background */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  max-width: 100% !important;
 }
 
 /* Form container styling */
 .form-container {
-  background: rgba(165, 231, 209, 0.253);
+  background: linear-gradient(
+    145deg,
+    #e2f2f7,
+    #e8dfed
+  ); /* Subtle gradient background */
+
   padding: 40px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -76,9 +86,9 @@ button:focus {
 }
 
 /* Additional media query for responsiveness */
-@media (max-width: 400px) {
+/* @media (max-width: 400px) {
   .form-container {
-    width: 90%; /* Smaller width on smaller screens */
-    padding: 20px; /* Less padding on smaller screens */
+    width: 90%; 
+    padding: 20px; 
   }
-}
+} */

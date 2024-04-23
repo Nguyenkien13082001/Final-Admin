@@ -12,7 +12,10 @@
   min-width: 300px;
   margin: 0 10px; /* Khoảng cách giữa các biểu đồ */
   padding: 20px;
-  background-color: #e1f2fa50;
+  background: linear-gradient(
+    #e2f2f7,
+    #e8dfed
+  ); /* Subtle gradient background */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;

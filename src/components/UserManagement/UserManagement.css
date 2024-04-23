@@ -3,7 +3,12 @@
   margin: 20px auto;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  background-color: #dbf1f359;
+  background: linear-gradient(
+    #e2f2f7,
+    #e8dfed
+  ); /* Subtle gradient background */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
   overflow-x: auto; /* Cho phép cuộn ngang nếu bảng rộng */
 }
 

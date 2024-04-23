@@ -32,8 +32,8 @@ function FormLogin() {
     try {
       const response = await apiClient.post("/api/login", formData);
       console.log("login", response);
-      if (response.token !== "") {
-        localStorage.setItem("token", response.token);
+      if (response.access_token !== "") {
+        localStorage.setItem("token", response.access_token);
         // localStorage.setItem("role", response.role);
         navigate("/admin/home");
         toast.success("Login successfully!");

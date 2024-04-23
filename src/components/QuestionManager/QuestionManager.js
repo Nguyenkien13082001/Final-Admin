@@ -120,6 +120,10 @@ function QuestionManager() {
       });
 
       fetchQuestion();
+      setSelectedChapter("");
+      setSelectedClass("");
+      setSelectedTopic("");
+
       toast.success("Add question successfully!");
     } catch (error) {
       console.error("Failed to add question:", error);
