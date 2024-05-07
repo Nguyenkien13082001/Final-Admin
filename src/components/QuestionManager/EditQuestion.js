@@ -72,7 +72,7 @@ function EditQuestion({ question, onSave }) {
             <Form.Group as={Col} controlId="formGridContent">
               <Form.Label>Content</Form.Label>
               <Form.Control
-                type="text"
+                as={"textarea"}
                 placeholder="Enter Content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -86,7 +86,7 @@ function EditQuestion({ question, onSave }) {
                     <Col sm={8}>
                       <Form.Control
                         type="text"
-                        placeholder="Đáp Án 1"
+                        placeholder="Option 1"
                         value={option1}
                         onChange={(e) => setOption1(e.target.value)}
                       />
@@ -105,7 +105,7 @@ function EditQuestion({ question, onSave }) {
                     <Col sm={8}>
                       <Form.Control
                         type="text"
-                        placeholder="Đáp Án 2"
+                        placeholder="Option 2"
                         value={option2}
                         onChange={(e) => setOption2(e.target.value)}
                       />
@@ -124,7 +124,7 @@ function EditQuestion({ question, onSave }) {
                     <Col sm={8}>
                       <Form.Control
                         type="text"
-                        placeholder="Đáp Án 3"
+                        placeholder="Option 3"
                         value={option3}
                         onChange={(e) => setOption3(e.target.value)}
                       />
@@ -143,7 +143,7 @@ function EditQuestion({ question, onSave }) {
                     <Col sm={8}>
                       <Form.Control
                         type="text"
-                        placeholder="Đáp Án 4"
+                        placeholder="Option 4"
                         value={option4}
                         onChange={(e) => setOption4(e.target.value)}
                       />
@@ -165,7 +165,7 @@ function EditQuestion({ question, onSave }) {
             <Form.Group as={Col} controlId="formGridExplain">
               <Form.Label>Explain</Form.Label>
               <Form.Control
-                type="text"
+                as={"textarea"}
                 placeholder="Explain"
                 value={explain}
                 onChange={(e) => setExplain(e.target.value)}

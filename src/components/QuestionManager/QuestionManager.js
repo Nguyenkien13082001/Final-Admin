@@ -35,6 +35,7 @@ function QuestionManager() {
   const fetchClasses = async () => {
     const classes = await getClassesCount();
     setClasses(classes);
+    console.log("classes111", classes);
   };
 
   const fetchQuestion = async () => {
@@ -120,6 +121,7 @@ function QuestionManager() {
       });
 
       fetchQuestion();
+      fetchClasses();
       setSelectedChapter("");
       setSelectedClass("");
       setSelectedTopic("");
@@ -137,7 +139,6 @@ function QuestionManager() {
       const response = await apiClient.put(`/api/update_question_admin`, {
         question_id: id,
         content: question.content,
-
         options: question.options,
         correct: question.correct,
         explaination: question.explaination,
@@ -162,6 +163,8 @@ function QuestionManager() {
           (question) => question.id !== id
         );
         setShowQuestion(updatedQuestions);
+
+        fetchClasses();
         toast.success("Delete question successfully!");
       }
     } catch (error) {
@@ -243,13 +246,13 @@ function QuestionManager() {
               <thead>
                 <tr className="csstr">
                   <th style={{ width: "2%" }}>No</th>
-                  <th style={{ width: "20%" }}>Content</th>
+                  <th style={{ width: "15%" }}>Content</th>
                   <th>Opt1</th>
                   <th>Opt2</th>
                   <th>Opt3</th>
                   <th>Opt4</th>
                   {/* <th>Correct Answer</th> */}
-                  <th style={{ width: "25%" }}>Explanation</th>
+                  <th style={{ width: "20%" }}>Explanation</th>
                   <th style={{ width: "10%" }}>Action</th>
                 </tr>
               </thead>
@@ -259,7 +262,9 @@ function QuestionManager() {
                     <td>{index + 1}</td>
 
                     <td>
-                      <div>{question.content}</div>
+                      <div className="text-overflow" title={question.content}>
+                        {question.content}
+                      </div>
                     </td>
 
                     {question.answers.map((q) => (
@@ -267,6 +272,8 @@ function QuestionManager() {
                         {/* sử dụng React.Fragment để nhóm các thẻ <td> */}
 
                         <td
+                          className="text-overflow"
+                          title={q.answer.value1}
                           style={{
                             color: q.answer.value1 === q.correct ? "red" : null,
                           }}
@@ -274,6 +281,8 @@ function QuestionManager() {
                           {q.answer.value1}
                         </td>
                         <td
+                          className="text-overflow"
+                          title={q.answer.value2}
                           style={{
                             color: q.answer.value2 === q.correct ? "red" : null,
                           }}
@@ -281,6 +290,8 @@ function QuestionManager() {
                           {q.answer.value2}
                         </td>
                         <td
+                          className="text-overflow"
+                          title={q.answer.value3}
                           style={{
                             color: q.answer.value3 === q.correct ? "red" : null,
                           }}
@@ -288,6 +299,8 @@ function QuestionManager() {
                           {q.answer.value3}
                         </td>
                         <td
+                          className="text-overflow"
+                          title={q.answer.value4}
                           style={{
                             color: q.answer.value4 === q.correct ? "red" : null,
                           }}

@@ -11,29 +11,16 @@ import {
   Legend,
 } from "recharts";
 
-const data = [
-  { name: "month", User: 4000, Premium: 2400 },
-  { name: "month", User: 3000, Premium: 1398 },
-  { name: "month", User: 2000, Premium: 9800 },
-  { name: "month", User: 2780, Premium: 3908 },
-];
-
-const testDataCreation = [
-  { name: "month 1", TestsCreated: 30 },
-  { name: "month 2", TestsCreated: 20 },
-  { name: "month 3", TestsCreated: 50 },
-  { name: "month 4", TestsCreated: 40 },
-];
-
-const testAttemptsData = [
-  { name: "month 1", TestAttempts: 150 },
-  { name: "month 2", TestAttempts: 120 },
-  { name: "month 3", TestAttempts: 200 },
-  { name: "month 4", TestAttempts: 180 },
-];
+// const combinedData = [
+//   { name: "month 1", TestsCreated: 30, TestAttempts: 150 },
+//   { name: "month 2", TestsCreated: 20, TestAttempts: 120 },
+//   { name: "month 3", TestsCreated: 50, TestAttempts: 200 },
+//   { name: "month 4", TestsCreated: 40, TestAttempts: 180 },
+// ];
 
 function Dashboard() {
   const [userData, setUserData] = useState([]);
+  const [combinedData, setCombinedData] = useState([]);
   // const formatYAxisTick = (tickItem) => {
   //   return tickItem % 1 === 0 ? tickItem : "";
   // };
@@ -48,7 +35,17 @@ function Dashboard() {
 
   useEffect(() => {
     fetchUserData();
+    fetchCombinedData();
   }, []);
+
+  const fetchCombinedData = async () => {
+    try {
+      const response = await apiClient.get("/api/count_exam_admin");
+      setCombinedData(response.count);
+    } catch (error) {
+      console.error("Failed to fetch combined data:", error);
+    }
+  };
 
   return (
     <div className="chart-container">
@@ -86,36 +83,25 @@ function Dashboard() {
           style={{ backgroundColor: "#e1d5f326   " }}
           className="BarChartcss"
         >
-          <h2>Chart Number of Tests Created</h2>
+          <h2>Number of Mock Exam and Practice every month</h2>
           <BarChart
-            width={500}
+            width={800}
             height={300}
-            data={testDataCreation}
-            // ... props khác ...
+            data={combinedData}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="Date" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="TestsCreated" fill="#8884d8" />
-          </BarChart>
-        </div>
-
-        <div style={{ backgroundColor: "#e1d5f326" }} className="BarChartcss">
-          <h2>Chart of Number of Times Test Taken</h2>
-          <BarChart
-            width={500}
-            height={300}
-            data={testAttemptsData}
-            // ... props khác ...
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="TestAttempts" fill="#82ca9d" />
+            <Bar dataKey="Mock" fill="#8884d8" name="Mock Exam" />
+            <Bar dataKey="Practice" fill="#82ca9d" name="Practice" />
           </BarChart>
         </div>
       </div>

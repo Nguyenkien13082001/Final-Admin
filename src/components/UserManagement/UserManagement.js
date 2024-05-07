@@ -59,6 +59,7 @@ export default function UserManagement() {
       // Cập nhật state để phản ánh thay đổi
       const updatedUsers = users.filter((user) => user.ID !== id); // tạo một mảng mới, bao gồm tất cả các người dùng ngoại trừ người dùng có id bằng với id được cung cấp
       setSearchUser(updatedUsers);
+      setUsers(updatedUsers);
       toast.success(response.message);
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -76,6 +77,7 @@ export default function UserManagement() {
         user.ID === id ? { ...user, Status: role } : user
       );
       setSearchUser(updatedUser);
+      setUsers(updatedUser);
       toast.success(response.message);
     } catch (error) {
       console.error("Failed to update class:", error);
