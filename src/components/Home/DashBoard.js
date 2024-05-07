@@ -12,24 +12,24 @@ import {
 } from "recharts";
 
 const data = [
-  { name: "Tháng 1", User: 4000, Premium: 2400 },
-  { name: "Tháng 2", User: 3000, Premium: 1398 },
-  { name: "Tháng 3", User: 2000, Premium: 9800 },
-  { name: "Tháng 4", User: 2780, Premium: 3908 },
+  { name: "month", User: 4000, Premium: 2400 },
+  { name: "month", User: 3000, Premium: 1398 },
+  { name: "month", User: 2000, Premium: 9800 },
+  { name: "month", User: 2780, Premium: 3908 },
 ];
 
 const testDataCreation = [
-  { name: "Tháng 1", TestsCreated: 30 },
-  { name: "Tháng 2", TestsCreated: 20 },
-  { name: "Tháng 3", TestsCreated: 50 },
-  { name: "Tháng 4", TestsCreated: 40 },
+  { name: "month 1", TestsCreated: 30 },
+  { name: "month 2", TestsCreated: 20 },
+  { name: "month 3", TestsCreated: 50 },
+  { name: "month 4", TestsCreated: 40 },
 ];
 
 const testAttemptsData = [
-  { name: "Tháng 1", TestAttempts: 150 },
-  { name: "Tháng 2", TestAttempts: 120 },
-  { name: "Tháng 3", TestAttempts: 200 },
-  { name: "Tháng 4", TestAttempts: 180 },
+  { name: "month 1", TestAttempts: 150 },
+  { name: "month 2", TestAttempts: 120 },
+  { name: "month 3", TestAttempts: 200 },
+  { name: "month 4", TestAttempts: 180 },
 ];
 
 function Dashboard() {
@@ -86,7 +86,7 @@ function Dashboard() {
           style={{ backgroundColor: "#e1d5f326   " }}
           className="BarChartcss"
         >
-          <h2>Biểu đồ Số lượng Bài kiểm tra được tạo</h2>
+          <h2>Chart Number of Tests Created</h2>
           <BarChart
             width={500}
             height={300}
@@ -103,7 +103,7 @@ function Dashboard() {
         </div>
 
         <div style={{ backgroundColor: "#e1d5f326" }} className="BarChartcss">
-          <h2>Biểu đồ Số lần Bài kiểm tra được làm</h2>
+          <h2>Chart of Number of Times Test Taken</h2>
           <BarChart
             width={500}
             height={300}

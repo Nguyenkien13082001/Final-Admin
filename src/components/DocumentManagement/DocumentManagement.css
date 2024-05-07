@@ -1,0 +1,93 @@
+/* DocumentManagement.css */
+.Documentmng {
+  max-width: 80%;
+  margin: 20px auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: #dbf1f359;
+}
+
+.Documentmng table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.Documentmng th,
+.Documentmng td {
+  border: 2px solid #ddd;
+  padding: 8px;
+  text-align: center;
+
+  white-space: nowrap; /* Giữ cho nội dung trong một dòng */
+  overflow: hidden; /* Ẩn nội dung thừa */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+  max-width: 250px; /* Hoặc phần trăm phù hợp */
+}
+
+.thumbnail {
+  width: 100px; /* Adjust based on your needs */
+  height: auto;
+}
+
+.addDcm {
+  text-align: center;
+  margin: 10px;
+}
+/* Media queries for responsive table */
+/* Media queries for responsive table */
+/* Media queries for responsive table */
+@media (max-width: 768px) {
+  .Documentmng table {
+    width: 100%;
+    margin: auto;
+    border: none; /* Loại bỏ đường viền bảng nếu có */
+  }
+
+  .Documentmng td {
+    display: block;
+    width: 100%;
+    clear: both;
+    padding: 10px;
+    border-bottom: none; /* Bỏ đường viền dưới mỗi cell */
+    background: #ffffff; /* Nền trắng cho mỗi card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng để tạo cảm giác nổi */
+    margin-bottom: 5px; /* Khoảng cách giữa các card */
+    border-radius: 8px; /* Bo góc cho card */
+  }
+  .Documentmng th {
+    display: none;
+  }
+
+  .Documentmng td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .Documentmng td {
+    text-align: left; /* Căn chỉnh nội dung về phía bên trái */
+  }
+  .btndcment {
+    text-align: center;
+  }
+
+  .btndcment {
+    border-bottom: 2px solid #000000; /* Tạo đường viền dưới cho phần nút hành động */
+  }
+
+  .thumbnail {
+    max-width: 100%; /* Đảm bảo hình thu nhỏ phù hợp với kích thước của card */
+    height: auto;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .Documentmng th,
+  .Documentmng td {
+    padding: 4px 10px; /* Giảm padding để tiết kiệm không gian */
+    font-size: 12px; /* Giảm kích thước phông chữ nếu cần */
+  }
+}

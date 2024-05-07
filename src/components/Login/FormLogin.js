@@ -32,7 +32,7 @@ function FormLogin() {
     try {
       const response = await apiClient.post("/api/login", formData);
       console.log("login", response);
-      if (response.access_token !== "") {
+      if (response.access_token !== "" && response.role === "ADMIN") {
         localStorage.setItem("token", response.access_token);
         // localStorage.setItem("role", response.role);
         navigate("/admin/home");

@@ -13,6 +13,7 @@ import { MdOutlineTopic } from "react-icons/md";
 import { TbMessage2Question } from "react-icons/tb";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { IoDocumentOutline } from "react-icons/io5";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,6 +80,13 @@ export default function Header() {
           imageSrc=<TbMessage2Question className="seticon" />
           text="Question Manager"
           to="/admin/QuestionManagement"
+        />
+
+        <NavItem
+          isOpen={isOpen}
+          imageSrc=<IoDocumentOutline className="seticon" />
+          text="Document Manager"
+          to="/admin/DocumentManagement"
         />
 
         <NavItem

@@ -13,6 +13,7 @@ import ClassManagerPage from "./Pages/ClassManagerPage";
 import ChapterManagementPage from "./Pages/ChapterManagementPage";
 import TopicManagerPage from "./Pages/TopicManagerPage";
 import QuestionManagerPage from "./Pages/QuestionManagerPage";
+import DocumentManagementPage from "./Pages/DocumentManagementPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -31,6 +32,10 @@ root.render(
         <Route
           path="admin/QuestionManagement"
           element={<QuestionManagerPage />}
+        />
+        <Route
+          path="admin/DocumentManagement"
+          element={<DocumentManagementPage />}
         />
       </Routes>
       <ToastContainer />
