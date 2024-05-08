@@ -195,9 +195,7 @@ function AddQuestion({ onAdd }) {
                 </Form.Select>
               </Form.Group>
             </Row>
-            <h5 style={{ color: "red", textAlign: "center" }}>
-              NOTE: Must choose topic before add!!!
-            </h5>
+
             <Form.Group as={Col} controlId="formGridContent">
               <Form.Label>Content</Form.Label>
               <Form.Control
@@ -205,7 +203,6 @@ function AddQuestion({ onAdd }) {
                 placeholder="Enter Content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                style={{ height: "100px" }}
               />
             </Form.Group>
 
