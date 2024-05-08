@@ -3,6 +3,7 @@ import apiClient from "../../api/apiClient";
 import { toast } from "react-toastify";
 import "./QuestionManager.css";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
+import LazyLoad from "react-lazy-load";
 import {
   getClassesCount,
   getQuestions,
@@ -28,6 +29,42 @@ function QuestionManager() {
   const [showQuestion, setShowQuestion] = useState([]);
   const [showQuestionDetail, setShowQuestionDetail] = useState(false);
   const [search, setSearch] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentQuestions, setCurrentQuestions] = useState([]);
+  const [questionsPerPage] = useState(10); // Có thể điều chỉnh số lượng này
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(showQuestion.length / questionsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+  const renderPageNumbers = pageNumbers.map((number) => {
+    return (
+      <li
+        key={number}
+        className={`page-item ${currentPage === number ? "active" : ""}`}
+      >
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentPage(number);
+          }}
+          href="#"
+          className="page-link"
+        >
+          {number}
+        </a>
+      </li>
+    );
+  });
+
+  useEffect(() => {
+    const indexOfFirstQuestion = (currentPage - 1) * questionsPerPage; // Bắt đầu từ 0 cho trang 1
+    const indexOfLastQuestion = currentPage * questionsPerPage; // Kết thúc tại 10 cho trang 1, nhưng không bao gồm câu thứ 10
+    setCurrentQuestions(
+      showQuestion.slice(indexOfFirstQuestion, indexOfLastQuestion)
+    );
+  }, [currentPage, showQuestion, questionsPerPage]);
 
   const config = {
     loader: { load: ["input/asciimath"] }, //mathjax config
@@ -241,98 +278,107 @@ function QuestionManager() {
           />
         </Form>
         <div className="question-management-table">
-          <MathJax dynamic>
-            <table>
-              <thead>
-                <tr className="csstr">
-                  <th style={{ width: "3%" }}>No</th>
-                  <th style={{ width: "15%" }}>Content</th>
-                  <th>Opt1</th>
-                  <th>Opt2</th>
-                  <th>Opt3</th>
-                  <th>Opt4</th>
-                  {/* <th>Correct Answer</th> */}
-                  <th style={{ width: "20%" }}>Explanation</th>
-                  <th style={{ width: "15%" }}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {showQuestion.map((question, index) => (
-                  <tr key={question.id}>
-                    <td>{index + 1}</td>
-
-                    <td>
-                      <div className="text-overflow" title={question.content}>
-                        {question.content}
-                      </div>
-                    </td>
-
-                    {question.answers.map((q) => (
-                      <Fragment key={index}>
-                        {/* sử dụng React.Fragment để nhóm các thẻ <td> */}
-
-                        <td
-                          className="text-overflow"
-                          title={q.answer.value1}
-                          style={{
-                            color: q.answer.value1 === q.correct ? "red" : null,
-                          }}
-                        >
-                          {q.answer.value1}
-                        </td>
-                        <td
-                          className="text-overflow"
-                          title={q.answer.value2}
-                          style={{
-                            color: q.answer.value2 === q.correct ? "red" : null,
-                          }}
-                        >
-                          {q.answer.value2}
-                        </td>
-                        <td
-                          className="text-overflow"
-                          title={q.answer.value3}
-                          style={{
-                            color: q.answer.value3 === q.correct ? "red" : null,
-                          }}
-                        >
-                          {q.answer.value3}
-                        </td>
-                        <td
-                          className="text-overflow"
-                          title={q.answer.value4}
-                          style={{
-                            color: q.answer.value4 === q.correct ? "red" : null,
-                          }}
-                        >
-                          {q.answer.value4}
-                        </td>
-                        {/* <td>{q.correct}</td> */}
-                        <td>{q.explaination}</td>
-                      </Fragment>
-                    ))}
-
-                    <td className="Edit-Del">
-                      <div className="action-buttons">
-                        <div className="edit-btn">
-                          <EditQuestion
-                            question={question}
-                            onSave={handleEdit}
-                          />
-                        </div>
-                        <button
-                          onClick={() => handleDelete(question.id)}
-                          className="delete-btn"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
+          <LazyLoad>
+            <MathJax dynamic>
+              <table>
+                <thead>
+                  <tr className="csstr">
+                    <th style={{ width: "3%" }}>No</th>
+                    <th style={{ width: "15%" }}>Content</th>
+                    <th>Opt1</th>
+                    <th>Opt2</th>
+                    <th>Opt3</th>
+                    <th>Opt4</th>
+                    {/* <th>Correct Answer</th> */}
+                    <th style={{ width: "20%" }}>Explanation</th>
+                    <th style={{ width: "15%" }}>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </MathJax>
+                </thead>
+                <tbody>
+                  {currentQuestions.map((question, index) => (
+                    <tr key={question.id}>
+                      <td>
+                        {(currentPage - 1) * questionsPerPage + index + 1}
+                      </td>
+
+                      <td>
+                        <div className="text-overflow" title={question.content}>
+                          {question.content}
+                        </div>
+                      </td>
+
+                      {question.answers.map((q) => (
+                        <Fragment key={index}>
+                          {/* sử dụng React.Fragment để nhóm các thẻ <td> */}
+
+                          <td
+                            className="text-overflow"
+                            title={q.answer.value1}
+                            style={{
+                              color:
+                                q.answer.value1 === q.correct ? "red" : null,
+                            }}
+                          >
+                            {q.answer.value1}
+                          </td>
+                          <td
+                            className="text-overflow"
+                            title={q.answer.value2}
+                            style={{
+                              color:
+                                q.answer.value2 === q.correct ? "red" : null,
+                            }}
+                          >
+                            {q.answer.value2}
+                          </td>
+                          <td
+                            className="text-overflow"
+                            title={q.answer.value3}
+                            style={{
+                              color:
+                                q.answer.value3 === q.correct ? "red" : null,
+                            }}
+                          >
+                            {q.answer.value3}
+                          </td>
+                          <td
+                            className="text-overflow"
+                            title={q.answer.value4}
+                            style={{
+                              color:
+                                q.answer.value4 === q.correct ? "red" : null,
+                            }}
+                          >
+                            {q.answer.value4}
+                          </td>
+                          {/* <td>{q.correct}</td> */}
+                          <td>{q.explaination}</td>
+                        </Fragment>
+                      ))}
+
+                      <td className="Edit-Del">
+                        <div className="action-buttons">
+                          <div className="edit-btn">
+                            <EditQuestion
+                              question={question}
+                              onSave={handleEdit}
+                            />
+                          </div>
+                          <button
+                            onClick={() => handleDelete(question.id)}
+                            className="delete-btn"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <ul className="pagination">{renderPageNumbers}</ul>
+            </MathJax>
+          </LazyLoad>
         </div>
       </div>
     </MathJaxContext>
