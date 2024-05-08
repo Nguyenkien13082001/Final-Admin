@@ -245,7 +245,7 @@ function QuestionManager() {
             <table>
               <thead>
                 <tr className="csstr">
-                  <th style={{ width: "2%" }}>No</th>
+                  <th style={{ width: "3%" }}>No</th>
                   <th style={{ width: "15%" }}>Content</th>
                   <th>Opt1</th>
                   <th>Opt2</th>
@@ -253,7 +253,7 @@ function QuestionManager() {
                   <th>Opt4</th>
                   {/* <th>Correct Answer</th> */}
                   <th style={{ width: "20%" }}>Explanation</th>
-                  <th style={{ width: "10%" }}>Action</th>
+                  <th style={{ width: "15%" }}>Action</th>
                 </tr>
               </thead>
               <tbody>
