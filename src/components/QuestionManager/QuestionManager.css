@@ -65,6 +65,18 @@
 .cssradio {
   margin-top: 0.5em;
 }
+.pagination {
+  margin-top: 10px;
+  text-align: center;
+}
+.pagination {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+  white-space: nowrap; /* Ngăn các mục pagination xuống dòng */
+  overflow: auto; /* Hiển thị thanh cuộn nếu cần */
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .input-field,

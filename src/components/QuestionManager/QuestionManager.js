@@ -30,40 +30,64 @@ function QuestionManager() {
   const [showQuestionDetail, setShowQuestionDetail] = useState(false);
   const [search, setSearch] = useState("");
 
+  // Trạng thái hiện tại của trang, khởi tạo bằng 1, tức là khi component được tải lần đầu, nó sẽ hiển thị trang đầu tiên
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentQuestions, setCurrentQuestions] = useState([]);
-  const [questionsPerPage] = useState(10); // Có thể điều chỉnh số lượng này
 
+  // Mảng các câu hỏi hiện tại được hiển thị trên trang, khởi tạo là một mảng trống
+  const [currentQuestions, setCurrentQuestions] = useState([]);
+
+  // Số lượng câu hỏi trên mỗi trang, được đặt cố định là 10. Bạn có thể thay đổi số này để hiển thị nhiều hơn hoặc ít hơn trên mỗi trang
+  const [questionsPerPage] = useState(10); // Có thể điều chỉnh số lượng này
+  // Khởi tạo một mảng trống để lưu trữ các số trang
   const pageNumbers = [];
+
+  // Vòng lặp for để tạo mảng số trang.
+  // Sử dụng Math.ceil để đảm bảo số trang là số nguyên và bao gồm tất cả các câu hỏi
+  // Chia tổng số câu hỏi cho số câu hỏi mỗi trang để tính được tổng số trang cần thiết
   for (let i = 1; i <= Math.ceil(showQuestion.length / questionsPerPage); i++) {
-    pageNumbers.push(i);
+    pageNumbers.push(i); // Thêm số trang vào mảng pageNumbers
   }
+
+  // Biến renderPageNumbers sử dụng hàm map để chuyển đổi mảng pageNumbers thành các phần tử JSX
+  // Mỗi phần tử JSX đại diện cho một số trang trên giao diện người dùng
   const renderPageNumbers = pageNumbers.map((number) => {
     return (
       <li
-        key={number}
-        className={`page-item ${currentPage === number ? "active" : ""}`}
+        key={number} // Sử dụng số trang làm khóa duy nhất cho mỗi liên kết trang, điều này là cần thiết trong React để xác định từng phần tử một cách hiệu quả
+        className={`page-item ${currentPage === number ? "active" : ""}`} // Thêm class 'active' nếu trang hiện tại trùng với số trang, điều này giúp người dùng biết trang nào đang được xem
       >
         <a
           onClick={(e) => {
-            e.preventDefault();
-            setCurrentPage(number);
+            e.preventDefault(); // Ngăn hành vi mặc định của liên kết, tức là ngăn không cho trình duyệt tải lại trang
+            setCurrentPage(number); // Cập nhật trạng thái trang hiện tại thành trang được nhấp
           }}
-          href="#"
-          className="page-link"
+          href="#" // Sử dụng href="#" để chỉ ra rằng đây là một liên kết, mặc dù chúng ta đã ngăn chặn hành vi tải lại trang
+          className="page-link" // Sử dụng class 'page-link' để áp dụng các style phù hợp với liên kết phân trang
         >
           {number}
+          {/* //Hiển thị số trang trong liên kết  */}
         </a>
       </li>
     );
   });
 
   useEffect(() => {
-    const indexOfFirstQuestion = (currentPage - 1) * questionsPerPage; // Bắt đầu từ 0 cho trang 1
-    const indexOfLastQuestion = currentPage * questionsPerPage; // Kết thúc tại 10 cho trang 1, nhưng không bao gồm câu thứ 10
+    // Tính toán chỉ số của câu hỏi đầu tiên cần hiển thị trên trang hiện tại
+    // Ví dụ: Nếu currentPage là 1 và questionsPerPage là 10, indexOfFirstQuestion sẽ là 0
+    const indexOfFirstQuestion = (currentPage - 1) * questionsPerPage;
+
+    // Tính toán chỉ số của câu hỏi cuối cùng cần hiển thị (không bao gồm câu hỏi này trong slice)
+    // Ví dụ: Nếu currentPage là 1 và questionsPerPage là 10, indexOfLastQuestion sẽ là 10
+    // Lưu ý: slice lấy từ index đầu tiên đến trước index cuối, vì vậy không bao gồm câu hỏi ở chỉ số 10
+    const indexOfLastQuestion = currentPage * questionsPerPage;
+
+    // Cập nhật mảng currentQuestions dựa trên các chỉ số vừa tính toán
+    // Sử dụng phương thức slice để lấy các câu hỏi từ showQuestion mà chỉ nằm trong phạm vi trang hiện tại
     setCurrentQuestions(
       showQuestion.slice(indexOfFirstQuestion, indexOfLastQuestion)
     );
+    // Phụ thuộc của useEffect bao gồm currentPage, showQuestion, và questionsPerPage
+    // Nghĩa là bất cứ khi nào một trong các giá trị này thay đổi, useEffect sẽ được thực thi lại
   }, [currentPage, showQuestion, questionsPerPage]);
 
   const config = {
@@ -89,6 +113,7 @@ function QuestionManager() {
     console.log(e.target.value);
     if (e.target.value === "0") {
       setChapters([]);
+      setTopics([]);
       setShowQuestion(questionsData);
       setSelectedClass("");
     } else {
@@ -376,7 +401,9 @@ function QuestionManager() {
                   ))}
                 </tbody>
               </table>
-              <ul className="pagination">{renderPageNumbers}</ul>
+              <div style={{ textAlign: "center" }}>
+                <ul className="pagination">{renderPageNumbers}</ul>
+              </div>
             </MathJax>
           </LazyLoad>
         </div>

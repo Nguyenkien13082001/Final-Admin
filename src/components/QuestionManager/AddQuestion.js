@@ -138,6 +138,8 @@ function AddQuestion({ onAdd }) {
     setOption4("");
     setCorrectOption("");
     setExplain("");
+    setChapters([]);
+    setTopics([]);
 
     setShow(false);
   };
